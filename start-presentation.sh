@@ -5,9 +5,6 @@ cleanup() {
     if [ ! -z "$DONUT_PID" ]; then
         kill $DONUT_PID 2>/dev/null || true
     fi
-    if [ ! -z "$SERVER_PID" ]; then
-        kill $SERVER_PID 2>/dev/null || true
-    fi
     exit
 }
 
@@ -34,18 +31,13 @@ else
     sleep 2
 fi
 
-pushd presentation
-python3 -m http.server 8080 &
-SERVER_PID=$!
-popd
-
 # Detect OS and use appropriate command to open presentation
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
-    open 'http://localhost:8080'
+    open 'presentation/index.html'
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Linux
-    xdg-open 'http://localhost:8080'
+    xdg-open 'presentation/index.html'
 else
     echo "Sistema operacional não suportado. Abra manualmente: presentation/index.html"
 fi
